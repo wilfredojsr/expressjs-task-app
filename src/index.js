@@ -1,18 +1,7 @@
-const express = require('express')
-require('./db/mongoose')
-const userRouter = require('./routers/user')
-const taskRouter = require('./routers/task')
-
-const app = express()
+const {app, mongoDB} = require('./app')
 const port = process.env.PORT || 3000
 
-app.use((req, res, next) => {
-  next()
-})
-
-app.use(express.json())
-app.use(userRouter)
-app.use(taskRouter)
+mongoDB.connect()
 
 app.listen(port, () => {
   console.log('Server is up on port ' + port)
