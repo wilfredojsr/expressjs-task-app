@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "env-cmd -f ./src/config/test.env jest"
+    "test": "env-cmd -f ./src/config/test.env jest --runInBand"
   },
   "jest": {
     "testEnvironment": "node",

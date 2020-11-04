@@ -1,21 +1,9 @@
 const request = require('supertest')
-const {app, mongoDB} = require('../src/app')
+const {app} = require('../src/app')
+const {userOne, setupDatabase} = require('./fixtures/db')
 const User = require('../src/models/user')
 
-const userOne = {
-  name: "Mike",
-  email: "mike@mail.com",
-  password: "12345678"
-}
-
-beforeAll(async () => {
-  await mongoDB.connect()
-  await User.deleteMany()
-  const newUser = await new User(userOne).save()
-  await newUser.generateAuthToken()
-  userOne.id = newUser.id
-  userOne.tokens = newUser.tokens
-})
+beforeAll(setupDatabase)
 
 afterEach(() => {
   //console.log('afterEach')
