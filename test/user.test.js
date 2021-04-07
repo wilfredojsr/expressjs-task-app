@@ -1,11 +1,12 @@
 const request = require('supertest')
 const {app} = require('../src/app')
-const {userOne, setupDatabase} = require('./fixtures/db')
+const {userOne, setupDatabase, closeDatabase} = require('./fixtures/db')
 const User = require('../src/models/user')
 
 describe('User', () => {
 
   beforeAll(setupDatabase)
+  afterAll(closeDatabase)
 
   it('Should signup a new user', async () => {
     const response = await request(app).post('/users').send({
@@ -56,17 +57,6 @@ describe('User', () => {
       .expect(401)
   })
 
-  it('Should delete account for user', async () => {
-    await request(app)
-      .delete('/users/me')
-      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
-      .send()
-      .expect(200)
-
-    const user = await User.findById(userOne.id)
-    expect(user).toBeNull()
-  })
-
   it('Should not delete account for unauthenticated user', async () => {
     await request(app)
       .delete('/users/me')
@@ -106,5 +96,16 @@ describe('User', () => {
         location: 'Philadelphia'
       })
       .expect(400)
+  })
+
+  it('Should delete account for user', async () => {
+    await request(app)
+      .delete('/users/me')
+      .set('Authorization', `Bearer ${userOne.tokens[0].token}`)
+      .send()
+      .expect(200)
+
+    const user = await User.findById(userOne.id)
+    expect(user).toBeNull()
   })
 })

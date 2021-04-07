@@ -4,6 +4,9 @@ const mongoose = require('mongoose')
 const connectionURL = process.env.MONGO_DB_URL
 
 const mongoDB = {
+  disconnect: async () => {
+    return await mongoose.disconnect()
+  },
   connect: async () => {
     return await mongoose.connect(connectionURL, {
       useNewUrlParser: true,

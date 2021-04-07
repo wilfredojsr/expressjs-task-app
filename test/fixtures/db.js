@@ -53,11 +53,16 @@ const setupDatabase = async () => {
   await createTask(taskThree, userTwo)
 }
 
+const closeDatabase = async () => {
+  await mongoDB.disconnect()
+}
+
 module.exports = {
   userOne,
   userTwo,
   taskOne,
   taskTwo,
   taskThree,
-  setupDatabase
+  setupDatabase,
+  closeDatabase
 }
